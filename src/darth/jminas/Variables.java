@@ -12,16 +12,29 @@ public class Variables {
 							  color4 = Color.magenta, color5 = Color.yellow, color6 = Color.cyan,
 							  color7 = Color.orange, color8 = Color.black;
 	
-	public static final String pathIcoCronometro = "/img/cronometro.png";
-	public static final String pathIcoMinas = "/img/mina.png";
-	public static final String pathBandera = "/img/bandera.png";
-	public static final String pathExplosion = "/img/boom.png";
-	public static final String pathNormal = "/img/cool_32x32.png";
-	public static final String pathClick = "/img/surprised_32x32.png";
-	public static final String pathMarca = "/img/question_32x32.png";
-	public static final String pathLooser = "/img/crying_32x32.png";
-	public static final String pathWinner = "/img/party_32x32.png";
-	public static final String pathRiendo = "/img/laughtingoutloud_32x32.png";
+	public static final String[] archivos = {
+		"cronometro.png",
+		"mina.png",
+		"bandera.png",
+		"boom.png",
+		"cool_32x32.png",
+		"surprised_32x32.png",
+		"question_32x32.png",
+		"crying_32x32.png",
+		"party_32x32.png",
+		"laughtingoutloud_32x32.png"
+	};
+	
+	public static final String pathIcoCronometro = "/img/"+archivos[0];
+	public static final String pathIcoMinas = "/img/"+archivos[1];
+	public static final String pathBandera = "/img/"+archivos[2];
+	public static final String pathExplosion = "/img/"+archivos[3];
+	public static final String pathNormal = "/img/"+archivos[4];
+	public static final String pathClick = "/img/"+archivos[5];
+	public static final String pathMarca = "/img/"+archivos[6];
+	public static final String pathLooser = "/img/"+archivos[7];
+	public static final String pathWinner = "/img/"+archivos[8];
+	public static final String pathRiendo = "/img/"+archivos[9];
 	public static final String SonidoExplosion = "boom.wav";
 	public static final String SonidoGanador = "win.wav";
 	
