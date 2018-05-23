@@ -141,7 +141,6 @@ public class JMinasMain extends JFrame implements ActionListener {
             smn3 = new JMenuItem("Experto");
             smn3.addActionListener(this);
             mNivel.add(smn3);
-            
         }
         mOpciones.add(mNivel);
         moEstadisticas = new JMenuItem("Estadisticas");
@@ -292,7 +291,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         public void run() {
             try {
                 final Clip sonido = AudioSystem.getClip();
-                URL pathBoom = getClass().getResource("as"+str);
+                URL pathBoom = getClass().getResource(str);
                 sonido.open(AudioSystem.getAudioInputStream(pathBoom));
                 sonido.start();
                 sonido.loop(2);
