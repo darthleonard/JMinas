@@ -292,37 +292,35 @@ public class JMinasMain extends JFrame implements ActionListener {
         public void run() {
             try {
                 final Clip sonido = AudioSystem.getClip();
-                URL pathBoom = pc.getClass().getResource(str);
+                URL pathBoom = getClass().getResource("as"+str);
                 sonido.open(AudioSystem.getAudioInputStream(pathBoom));
                 sonido.start();
                 sonido.loop(2);
                 while(sonido.getMicrosecondPosition() <= sonido.getMicrosecondLength());
                 sonido.stop();
-            } catch (LineUnavailableException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e){
-                try {
-                    File f = new File("JMinas_errorlog.txt");
-                    PrintWriter pw = new PrintWriter(f);
-                    String str = "Error en el archivo de audio:\n" + e.getMessage();
-                    if(f.exists()) {
-                        pw.append(str);
-                    } else {
-                        pw.println(str);
-                    }
-                    pw.close();
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                }
+            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | NullPointerException e) {
+                errorReporter("Error message: " + e.getMessage() + "\n" + e.getLocalizedMessage());
                 if(Perdedor)
                     JOptionPane.showMessageDialog(null, "¡BOO000000M!", "Error con el archivo de audio", JOptionPane.ERROR_MESSAGE);
                 else if(Ganador)
                     JOptionPane.showMessageDialog(null, "¡HAS GANADO!", "Error con el archivo de audio", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+    
+    private static void errorReporter(String message) {
+        try {
+            File f = new File("JMinas_errorlog.txt");
+            PrintWriter pw = new PrintWriter(f);
+            String str = "Error en el archivo de audio:\n" + message;
+            if(f.exists()) {
+                pw.append(str);
+            } else {
+                pw.println(str);
+            }
+            pw.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
         }
     }
     
