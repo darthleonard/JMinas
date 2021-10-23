@@ -140,13 +140,6 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		g.drawRect(mira.x*dx+1, mira.y*dy+1, dx-2, dy-2);
 	}
 	
-	private boolean valida() {
-		if(mapa.getCeldasAbiertas() == (Variables.ancho*Variables.alto - Variables.numeroMinas))
-			return true;
-		else
-			return false;
-	}
-	
 	public void Perdio() {
 		PanelSuperior.UpdateIconStart(iconLooser,Variables.txtLooser);
 		mapa.AbrirTodo();
@@ -197,6 +190,10 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 			break;
 		}
 		repaint();
+	}
+	
+	private boolean valida() {
+		return mapa.getCeldasAbiertas() == (Variables.ancho * Variables.alto - Variables.numeroMinas);
 	}
 	
 	public void mousePressed(MouseEvent e) {
