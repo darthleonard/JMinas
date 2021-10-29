@@ -57,11 +57,6 @@ public class JMinasMain extends JFrame implements ActionListener {
         addKeyListener(pc);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        /*try {
-            loadErrorChecker.checkErrors();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
         setVisible(true);
     }
     
