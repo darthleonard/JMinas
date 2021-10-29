@@ -60,3 +60,6 @@ local.properties
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
+/JMinas_errorlog.txt
+/hs_err_pid10209.log
+/hs_err_pid10543.log
