@@ -50,12 +50,12 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		try {
 			imgBandera = new ImageIcon(getClass().getResource(Variables.pathBandera)).getImage();
 			imgExplosion = new ImageIcon(getClass().getResource(Variables.pathExplosion)).getImage();
-			iconNormal = new ImageIcon(this.getClass().getResource(Variables.pathNormal));
-			iconClick = new ImageIcon(this.getClass().getResource(Variables.pathClick));
-			iconMarca = new ImageIcon(this.getClass().getResource(Variables.pathMarca));
-			iconLooser = new ImageIcon(this.getClass().getResource(Variables.pathLooser));
-			iconWiner = new ImageIcon(this.getClass().getResource(Variables.pathWinner));
-			iconRiendo = new ImageIcon(this.getClass().getResource(Variables.pathRiendo));
+			iconNormal = new ImageIcon(getClass().getResource(Variables.pathNormal));
+			iconClick = new ImageIcon(getClass().getResource(Variables.pathClick));
+			iconMarca = new ImageIcon(getClass().getResource(Variables.pathMarca));
+			iconLooser = new ImageIcon(getClass().getResource(Variables.pathLooser));
+			iconWiner = new ImageIcon(getClass().getResource(Variables.pathWinner));
+			iconRiendo = new ImageIcon(getClass().getResource(Variables.pathRiendo));
 		} catch(NullPointerException e) {
 			new LoadErrorChecker().CreateLog();
 		}
@@ -70,8 +70,6 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		
-		
 	}
 
 	public void restart() {
