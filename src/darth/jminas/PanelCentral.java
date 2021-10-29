@@ -17,6 +17,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import darth.jminas.errors.LoadErrorChecker;
+
 public class PanelCentral extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private static final long serialVersionUID = 5390823312595822624L;
 	
@@ -55,7 +57,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 			iconWiner = new ImageIcon(this.getClass().getResource(Variables.pathWinner));
 			iconRiendo = new ImageIcon(this.getClass().getResource(Variables.pathRiendo));
 		} catch(NullPointerException e) {
-			JMinasMain.flagErrorImagenes = true;
+			new LoadErrorChecker().CreateLog();
 		}
 		
 		if(iconNormal != null)

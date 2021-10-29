@@ -31,8 +31,6 @@ import javax.swing.JSeparator;
 public class JMinasMain extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5263848303195260404L;
     
-    public static boolean flagErrorImagenes = false;
-    
     private JMenuBar mb;
     private JMenu mOpciones, mMas, mNivel;
     private JMenuItem moNuevo,moSalir,moEstadisticas,mAcerca,smn0,smn1,smn2,smn3;
@@ -59,50 +57,12 @@ public class JMinasMain extends JFrame implements ActionListener {
         addKeyListener(pc);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        try {
-            checkErrors();
+        /*try {
+            loadErrorChecker.checkErrors();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         setVisible(true);
-    }
-    
-    private void checkErrors() throws FileNotFoundException {
-        if(flagErrorImagenes) {
-            PrintWriter pw = new PrintWriter(new File("JMinas_errorlog.txt"));
-            pw.println("******************************************************************************");
-            pw.println("**                            REVISANDO IMAGENES                            **");
-            pw.println("** Si no encuentra algun archivo, revisa que exista o que este bien escrito **");
-            pw.println("******************************************************************************\n");
-            File f = new File(getClass().getClassLoader().getResource("").getFile() + "img");
-            
-            if(f.exists()) {
-                File[] file = f.listFiles();
-                boolean flag = false;
-                int cont = 0;
-                for (int i = 0; i < Variables.archivos.length; i++) {
-                    flag = false;
-                    for (int j = 0; j < file.length; j++) {
-                        if(Variables.archivos[i].equals(file[j].getName())) {
-                            flag = true;
-                            break;
-                        }
-                    }
-                    if(flag)
-                        continue;
-                    pw.println(++cont + ": No se encuentra el archivo \""+ Variables.archivos[i] +"\"");
-                }
-            }else
-                pw.println("La carpeta de imagenes (\"img\") no se encuentra");
-            
-            pw.close();
-            JOptionPane.showMessageDialog(null,
-                    "No se pudieron cargar algunas imagenes,\n" +
-                            "se creo el archivo JMinas_errorlog.txt con\n" +
-                            "informacion al respecto",
-                    "ERROR",
-                    JOptionPane.ERROR_MESSAGE);
-        }
     }
     
     private void initComponents() {
