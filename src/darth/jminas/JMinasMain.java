@@ -31,17 +31,18 @@ import javax.swing.JSeparator;
 public class JMinasMain extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5263848303195260404L;
     
-    private JMenuBar mb;
-    private JMenu mOpciones, mMas, mNivel;
-    private JMenuItem moNuevo,moSalir,moEstadisticas,mAcerca,smn0,smn1,smn2,smn3;
+    private JMenuBar menuBar;
+    private JMenu menuOpciones, menuMas, menuNivel;
+    private JMenuItem menuItemNuevo, menuItemSalir, menuItemEstadisticas, menuItemAcerca,
+    	menuItemNivel0, menuItemNivel1, menuItemNivel2, menuItemNivel3;
     
-    static PanelSuperior ps;
-    static PanelCentral pc;
-    static PanelInferior pi;
+    static PanelSuperior panelSuperior;
+    static PanelCentral panelCentral;
+    static PanelInferior panelInferior;
     
-    private static Cronometro c;
+    private static Cronometro cronometro;
     
-    private static boolean playing = false;
+    private static boolean jugando = false;
     public static boolean Ganador = false;
     public static boolean Perdedor = false;
     
@@ -54,86 +55,86 @@ public class JMinasMain extends JFrame implements ActionListener {
         createMenu();
         initComponents();
         addComponents();
-        addKeyListener(pc);
+        addKeyListener(panelCentral);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
     
     private void initComponents() {
-        ps = new PanelSuperior();
-        pc = new PanelCentral(this);
-        pi = new PanelInferior();
+        panelSuperior = new PanelSuperior();
+        panelCentral = new PanelCentral(this);
+        panelInferior = new PanelInferior();
     }
     
     private void addComponents() {
-        add(ps, BorderLayout.NORTH);
-        add(pc, BorderLayout.CENTER);
-        add(pi, BorderLayout.SOUTH);
+        add(panelSuperior, BorderLayout.NORTH);
+        add(panelCentral, BorderLayout.CENTER);
+        add(panelInferior, BorderLayout.SOUTH);
     }
     
     private void createMenu() {
-        mb=new JMenuBar();
-        setJMenuBar(mb);
+        menuBar=new JMenuBar();
+        setJMenuBar(menuBar);
         
-        mOpciones = new JMenu("Opciones");
-        mb.add(mOpciones);
-        moNuevo = new JMenuItem("Nuevo");
-        moNuevo.addActionListener(this);
-        mOpciones.add(moNuevo);
-        mOpciones.add(new JSeparator());
-        mNivel = new JMenu("Nivel");
+        menuOpciones = new JMenu("Opciones");
+        menuBar.add(menuOpciones);
+        menuItemNuevo = new JMenuItem("Nuevo");
+        menuItemNuevo.addActionListener(this);
+        menuOpciones.add(menuItemNuevo);
+        menuOpciones.add(new JSeparator());
+        menuNivel = new JMenu("Nivel");
         {
-            smn0 = new JMenuItem("Nivel 0");
-            smn0.addActionListener(this);
-            mNivel.add(smn0);
-            smn1 = new JMenuItem("Principiante");
-            smn1.addActionListener(this);
-            mNivel.add(smn1);
-            smn2 = new JMenuItem("Avanzado");
-            smn2.addActionListener(this);
-            mNivel.add(smn2);
-            smn3 = new JMenuItem("Experto");
-            smn3.addActionListener(this);
-            mNivel.add(smn3);
+            menuItemNivel0 = new JMenuItem("Nivel 0");
+            menuItemNivel0.addActionListener(this);
+            menuNivel.add(menuItemNivel0);
+            menuItemNivel1 = new JMenuItem("Principiante");
+            menuItemNivel1.addActionListener(this);
+            menuNivel.add(menuItemNivel1);
+            menuItemNivel2 = new JMenuItem("Avanzado");
+            menuItemNivel2.addActionListener(this);
+            menuNivel.add(menuItemNivel2);
+            menuItemNivel3 = new JMenuItem("Experto");
+            menuItemNivel3.addActionListener(this);
+            menuNivel.add(menuItemNivel3);
         }
-        mOpciones.add(mNivel);
-        moEstadisticas = new JMenuItem("Estadisticas");
-        mOpciones.add(moEstadisticas);
-        mOpciones.add(new JSeparator());
-        moSalir = new JMenuItem("Salir");
-        moSalir.addActionListener(this);
-        mOpciones.add(moSalir);
+        menuOpciones.add(menuNivel);
+        menuItemEstadisticas = new JMenuItem("Estadisticas");
+        menuOpciones.add(menuItemEstadisticas);
+        menuOpciones.add(new JSeparator());
+        menuItemSalir = new JMenuItem("Salir");
+        menuItemSalir.addActionListener(this);
+        menuOpciones.add(menuItemSalir);
         
-        mMas = new JMenu("Mas");
-        mb.add(mMas);
-        mAcerca = new JMenuItem("Acerca de");
-        mAcerca.addActionListener(this);
-        mMas.add(mAcerca);
+        menuMas = new JMenu("Mas");
+        menuBar.add(menuMas);
+        menuItemAcerca = new JMenuItem("Acerca de");
+        menuItemAcerca.addActionListener(this);
+        menuMas.add(menuItemAcerca);
     }
     
     public static void StartGame() {
-        c = new Cronometro();
-        c.start();
-        playing = true;
+        cronometro = new Cronometro();
+        cronometro.start();
+        jugando = true;
         Ganador = false;
         Perdedor = false;
     }
     
     public static void RestartGame() {
-        pc.restart();
-        ps.restart();
-        if(c != null)
-            c.setActivo(false);
-        playing = false;
+        panelCentral.restart();
+        panelSuperior.restart();
+        if(cronometro != null)
+            cronometro.setActivo(false);
+        jugando = false;
         Ganador = false;
         Perdedor = false;
     }
     
     public static void LostGame() {
-        c.setActivo(false);
-        pc.Perdio();
-        playing = false;
+        cronometro.setActivo(false);
+        panelCentral.Perdio();
+        jugando = false;
         Ganador = false;
         Perdedor = true;
         new Sonido(Variables.SonidoExplosion).start();
@@ -141,42 +142,42 @@ public class JMinasMain extends JFrame implements ActionListener {
     
     public static void WinGame() {
         StopChron();
-        pc.Gano();
+        panelCentral.Gano();
         Ganador = true;
         Perdedor = false;
         new Sonido(Variables.SonidoGanador).start();
     }
     
     public static void StopChron() {
-        c.setActivo(false);
+        cronometro.setActivo(false);
     }
     
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==moNuevo)
+        if(e.getSource()==menuItemNuevo)
             RestartGame();
-        else if(e.getSource()==moSalir)
+        else if(e.getSource()==menuItemSalir)
             System.exit(0);
-        else if(e.getSource()==smn0) {
+        else if(e.getSource()==menuItemNivel0) {
             Variables.setNivel(0);
             setSize(300, 395);
             setLocationRelativeTo(null);
             RestartGame();
-        }else if(e.getSource()==smn1) {
+        }else if(e.getSource()==menuItemNivel1) {
             Variables.setNivel(1);
             setSize(300, 395);
             setLocationRelativeTo(null);
             RestartGame();
-        }else if(e.getSource()==smn2) {
+        }else if(e.getSource()==menuItemNivel2) {
             Variables.setNivel(2);
             setSize(468, 500);
             setLocationRelativeTo(null);
             RestartGame();
-        }else if(e.getSource()==smn3) {
+        }else if(e.getSource()==menuItemNivel3) {
             Variables.setNivel(3);
             setSize(842, 548);
             setLocationRelativeTo(null);
             RestartGame();
-        }else if(e.getSource()==mAcerca)
+        }else if(e.getSource()==menuItemAcerca)
             try {
                 Acerca();
             } catch (InterruptedException e1) {
@@ -185,7 +186,7 @@ public class JMinasMain extends JFrame implements ActionListener {
     }
     
     public static boolean isPlaying() {
-        return playing;
+        return jugando;
     }
     
     private void Acerca() throws InterruptedException {
