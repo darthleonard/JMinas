@@ -28,6 +28,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
+import darth.jminas.errors.ErrorReporter;
+
 public class JMinasMain extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5263848303195260404L;
     
@@ -35,6 +37,8 @@ public class JMinasMain extends JFrame implements ActionListener {
     private JMenu menuOpciones, menuMas, menuNivel;
     private JMenuItem menuItemNuevo, menuItemSalir, menuItemEstadisticas, menuItemAcerca,
     	menuItemNivel0, menuItemNivel1, menuItemNivel2, menuItemNivel3;
+    
+    private ErrorReporter errorReporter;
     
     static PanelSuperior panelSuperior;
     static PanelCentral panelCentral;
@@ -47,6 +51,9 @@ public class JMinasMain extends JFrame implements ActionListener {
     public static boolean Perdedor = false;
     
     public JMinasMain() {
+    	errorReporter = new ErrorReporter();
+    	limpiaErrores();
+    	
         setTitle("JMinas");
         setSize(300, 396);
         setLocationRelativeTo(null);
@@ -59,6 +66,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        validaErroresAlCargar();
     }
     
     private void initComponents() {
@@ -254,7 +262,7 @@ public class JMinasMain extends JFrame implements ActionListener {
                 while(sonido.getMicrosecondPosition() <= sonido.getMicrosecondLength());
                 sonido.stop();
             } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | NullPointerException e) {
-                errorReporter("Error message: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+            	errorReporter("Error message: " + e.getMessage() + "\n" + e.getLocalizedMessage());
                 if(Perdedor)
                     JOptionPane.showMessageDialog(null, "¡BOO000000M!", "Error con el archivo de audio", JOptionPane.ERROR_MESSAGE);
                 else if(Ganador)
@@ -277,6 +285,22 @@ public class JMinasMain extends JFrame implements ActionListener {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
+    }
+    
+    private void limpiaErrores() {
+    	errorReporter.LimpiaErrores();
+    }
+    
+    private void validaErroresAlCargar() {
+    	if(!errorReporter.ExistenErrores()) {
+    		return;
+    	}
+    	JOptionPane.showMessageDialog(null,
+    			"No se pudieron cargar algunos recursos,\n" +
+				"se creo el archivo JMinas_errorlog.txt con\n" +
+				"informacion al respecto",
+				"ERROR",
+				JOptionPane.ERROR_MESSAGE);
     }
     
     public static void main(String[] args) throws InterruptedException {

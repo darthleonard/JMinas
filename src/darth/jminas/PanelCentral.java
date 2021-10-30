@@ -17,7 +17,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import darth.jminas.errors.LoadErrorChecker;
+import darth.jminas.errors.ErrorReporter;
 
 public class PanelCentral extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private static final long serialVersionUID = 5390823312595822624L;
@@ -47,18 +47,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		PanelSuperior.UpdateMinas(contMinasMarcadas);
 		mira = new Point(0,0);
 		
-		try {
-			imgBandera = new ImageIcon(getClass().getResource(Variables.pathBandera)).getImage();
-			imgExplosion = new ImageIcon(getClass().getResource(Variables.pathExplosion)).getImage();
-			iconNormal = new ImageIcon(getClass().getResource(Variables.pathNormal));
-			iconClick = new ImageIcon(getClass().getResource(Variables.pathClick));
-			iconMarca = new ImageIcon(getClass().getResource(Variables.pathMarca));
-			iconLooser = new ImageIcon(getClass().getResource(Variables.pathLooser));
-			iconWiner = new ImageIcon(getClass().getResource(Variables.pathWinner));
-			iconRiendo = new ImageIcon(getClass().getResource(Variables.pathRiendo));
-		} catch(NullPointerException e) {
-			new LoadErrorChecker().CreateLog();
-		}
+		cargarImagenes();
 		
 		if(iconNormal != null)
 			PanelSuperior.UpdateIconStart(iconNormal, Variables.txtNormal);
@@ -194,6 +183,33 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	
 	private boolean valida() {
 		return mapa.getCeldasAbiertas() == (Variables.ancho * Variables.alto - Variables.numeroMinas);
+	}
+	
+	private void cargarImagenes() {
+		cargaImagenIndividual(imgBandera, Variables.pathBandera);
+		cargaImagenIndividual(imgExplosion, Variables.pathExplosion);
+		cargaImagenIndividual(iconNormal, Variables.pathNormal);
+		cargaImagenIndividual(iconClick, Variables.pathClick);
+		cargaImagenIndividual(iconMarca, Variables.pathMarca);
+		cargaImagenIndividual(iconLooser, Variables.pathLooser);
+		cargaImagenIndividual(iconWiner, Variables.pathWinner);
+		cargaImagenIndividual(iconRiendo, Variables.pathRiendo);
+	}
+	
+	private void cargaImagenIndividual(Image icon, String path) {
+		try {
+			icon = new ImageIcon(getClass().getResource(path)).getImage();
+		} catch(NullPointerException e) {
+			new ErrorReporter().CreateLog(path);
+		}
+	}
+	
+	private void cargaImagenIndividual(ImageIcon icon, String path) {
+		try {
+			icon = new ImageIcon(getClass().getResource(path));
+		} catch(NullPointerException e) {
+			new ErrorReporter().CreateLog(path);
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {

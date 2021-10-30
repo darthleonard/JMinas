@@ -1,0 +1,8 @@
+***************************************************************************
+**                               ERROR LOG                               **
+** Revisa que los archivos en la lista existan o que esten bien escritos **
+***************************************************************************
+
+/darth/img/bandera.png
+/darth/img/cool_32x32.png
+/darth/img/surprised_32x32.png
