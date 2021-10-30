@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
-import darth.jminas.errors.ErrorReporter;
+import darth.jminas.tools.ErrorReporter;
 
 public class JMinasMain extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5263848303195260404L;

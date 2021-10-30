@@ -1,4 +1,4 @@
-package darth.jminas.errors;
+package darth.jminas.tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;

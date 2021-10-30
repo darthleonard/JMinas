@@ -17,7 +17,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import darth.jminas.errors.ErrorReporter;
+import darth.jminas.tools.ErrorReporter;
 
 public class PanelCentral extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private static final long serialVersionUID = 5390823312595822624L;
