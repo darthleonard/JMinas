@@ -4,5 +4,3 @@
 ***************************************************************************
 
 /darth/img/bandera.png
-/darth/img/cool_32x32.png
-/darth/img/surprised_32x32.png
