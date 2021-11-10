@@ -8,8 +8,6 @@ import java.awt.LinearGradientPaint;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
+import darth.jminas.gui.AcercaFrame;
 import darth.jminas.tools.ErrorReporter;
 
 public class JMinasMain extends JFrame implements ActionListener {
@@ -185,65 +184,13 @@ public class JMinasMain extends JFrame implements ActionListener {
             setSize(842, 548);
             setLocationRelativeTo(null);
             RestartGame();
-        }else if(e.getSource()==menuItemAcerca)
-            try {
-                Acerca();
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
+        }else if(e.getSource()==menuItemAcerca) {
+        	new AcercaFrame().GenerateFrame();
+        }
     }
     
     public static boolean isPlaying() {
         return jugando;
-    }
-    
-    private void Acerca() throws InterruptedException {
-        final JFrame frame = new JFrame("Frame test");
-        frame.setUndecorated(true);
-        frame.setBackground(new Color(0,0,0,0));
-        frame.setContentPane(new Component());
-        frame.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                frame.dispose();
-            }
-        });
-        frame.pack();
-        frame.setSize(500, 200);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        Thread t = new Thread(){
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    frame.dispose();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-    }
-    
-    private static class Component extends JComponent {
-        private static final long serialVersionUID = 8668944310336850671L;
-        public void paintComponent(Graphics graphics) {
-            Graphics2D g = (Graphics2D) graphics;
-            Color[] colors = new Color[]{
-                new Color(0,0,0,0),
-                new Color(0.3f,0.3f,0.3f,1f),
-                new Color(0.3f,0.3f,0.3f,1f),
-                new Color(0,0,0,0)};
-            float[] stops = new float[]{0,0.2f,0.8f,1f};
-            LinearGradientPaint paint = new LinearGradientPaint(
-                    new Point(0,0),
-                    new Point(500,0),
-                    stops,colors);
-            g.setPaint(paint);
-            g.fillRect(0, 0, 500, 200);
-            g.setPaint(Color.WHITE);
-            g.drawString("Darth Leonard", 200, 90);
-            g.drawString("leolinuxmx@gmail.com", 185, 110);
-        }
     }
     
     static class Sonido extends Thread {
