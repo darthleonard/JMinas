@@ -1,24 +1,9 @@
 package darth.jminas;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,6 +13,7 @@ import javax.swing.JSeparator;
 
 import darth.jminas.gui.AcercaFrame;
 import darth.jminas.tools.ErrorReporter;
+import darth.jminas.tools.Sonido;
 
 public class JMinasMain extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5263848303195260404L;
@@ -144,7 +130,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         jugando = false;
         Ganador = false;
         Perdedor = true;
-        new Sonido(Variables.SonidoExplosion).start();
+        new Sonido(Variables.SonidoExplosion, Perdedor).start();
     }
     
     public static void WinGame() {
@@ -152,7 +138,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         panelCentral.Gano();
         Ganador = true;
         Perdedor = false;
-        new Sonido(Variables.SonidoGanador).start();
+        new Sonido(Variables.SonidoGanador, Perdedor).start();
     }
     
     public static void StopChron() {
@@ -191,47 +177,6 @@ public class JMinasMain extends JFrame implements ActionListener {
     
     public static boolean isPlaying() {
         return jugando;
-    }
-    
-    static class Sonido extends Thread {
-        String str;
-        public Sonido(String str) {
-            this.str = str;
-        }
-        
-        public void run() {
-            try {
-                final Clip sonido = AudioSystem.getClip();
-                URL pathBoom = getClass().getResource(str);
-                sonido.open(AudioSystem.getAudioInputStream(pathBoom));
-                sonido.start();
-                sonido.loop(2);
-                while(sonido.getMicrosecondPosition() <= sonido.getMicrosecondLength());
-                sonido.stop();
-            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | NullPointerException e) {
-            	errorReporter("Error message: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-                if(Perdedor)
-                    JOptionPane.showMessageDialog(null, "¡BOO000000M!", "Error con el archivo de audio", JOptionPane.ERROR_MESSAGE);
-                else if(Ganador)
-                    JOptionPane.showMessageDialog(null, "¡HAS GANADO!", "Error con el archivo de audio", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-    
-    private static void errorReporter(String message) {
-        try {
-            File f = new File("JMinas_errorlog.txt");
-            PrintWriter pw = new PrintWriter(f);
-            String str = "Error en el archivo de audio:\n" + message;
-            if(f.exists()) {
-                pw.append(str);
-            } else {
-                pw.println(str);
-            }
-            pw.close();
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
     }
     
     private void limpiaErrores() {

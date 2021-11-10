@@ -1,6 +1,6 @@
 package darth.jminas;
 
-import darth.jminas.JMinasMain.Sonido;
+import darth.jminas.tools.Sonido;
 
 public class Engine {
 	private JMinasMain main;
@@ -45,7 +45,7 @@ public class Engine {
         playing = false;
         winner = false;
         loser = true;
-        new Sonido(Variables.SonidoExplosion).start();
+        new Sonido(Variables.SonidoExplosion, true).start();
     }
     
     public void WinGame() {
@@ -53,7 +53,7 @@ public class Engine {
         panelCentral.Gano();
         winner = true;
         loser = false;
-        new Sonido(Variables.SonidoGanador).start();
+        new Sonido(Variables.SonidoGanador, false).start();
     }
     
     public void StopChron() {

@@ -8,13 +8,13 @@ import java.io.PrintWriter;
 public class ErrorReporter {
 	private String errorLogFileName = "JMinas_errorlog.txt";
 
-	public void CreateLog(String path) {
+	public void CreateLog(String message) {
 		File errorLogFile = new File(errorLogFileName);
 		try {
 			if(!errorLogFile.exists()) {
 				printFileHeader(errorLogFile);
 			}
-			printPathError(errorLogFile, path);
+			printPathError(errorLogFile, message);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -40,9 +40,9 @@ public class ErrorReporter {
 		pw.close();
 	}
 	
-	private void printPathError(File errorLogFile, String path) throws FileNotFoundException {
+	private void printPathError(File errorLogFile, String message) throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter(new FileOutputStream(errorLogFile, true));
-		pw.append(path + "\n");
+		pw.append(message + "\n");
 		pw.close();
 	}
 }
