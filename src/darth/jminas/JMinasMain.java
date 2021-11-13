@@ -27,7 +27,7 @@ public class JMinasMain extends JFrame implements ActionListener {
     
     private PanelSuperior panelSuperior;
     private PanelCentral panelCentral;
-    private  PanelInferior panelInferior;
+    private PanelInferior panelInferior;
     
     private static Cronometro cronometro;
     
