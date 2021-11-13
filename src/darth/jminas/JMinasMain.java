@@ -25,15 +25,15 @@ public class JMinasMain extends JFrame implements ActionListener {
     
     private ErrorReporter errorReporter;
     
-    static PanelSuperior panelSuperior;
-    static PanelCentral panelCentral;
-    static PanelInferior panelInferior;
+    private PanelSuperior panelSuperior;
+    private PanelCentral panelCentral;
+    private  PanelInferior panelInferior;
     
     private static Cronometro cronometro;
     
-    private static boolean jugando = false;
-    public static boolean Ganador = false;
-    public static boolean Perdedor = false;
+    private boolean jugando = false;
+    public boolean Ganador = false;
+    public boolean Perdedor = false;
     
     public JMinasMain() {
     	errorReporter = new ErrorReporter();
@@ -55,7 +55,7 @@ public class JMinasMain extends JFrame implements ActionListener {
     }
     
     private void initComponents() {
-        panelSuperior = new PanelSuperior();
+        panelSuperior = new PanelSuperior(this);
         panelCentral = new PanelCentral(this);
         panelInferior = new PanelInferior();
     }
@@ -106,7 +106,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         menuMas.add(menuItemAcerca);
     }
     
-    public static void StartGame() {
+    public void StartGame() {
         cronometro = new Cronometro();
         cronometro.start();
         jugando = true;
@@ -114,7 +114,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         Perdedor = false;
     }
     
-    public static void RestartGame() {
+    public void RestartGame() {
         panelCentral.restart();
         panelSuperior.restart();
         if(cronometro != null)
@@ -124,7 +124,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         Perdedor = false;
     }
     
-    public static void LostGame() {
+    public void LostGame() {
         cronometro.setActivo(false);
         panelCentral.Perdio();
         jugando = false;
@@ -133,7 +133,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         new Sonido(Variables.SonidoExplosion, Perdedor).start();
     }
     
-    public static void WinGame() {
+    public void WinGame() {
         StopChron();
         panelCentral.Gano();
         Ganador = true;
@@ -175,7 +175,7 @@ public class JMinasMain extends JFrame implements ActionListener {
         }
     }
     
-    public static boolean isPlaying() {
+    public boolean isPlaying() {
         return jugando;
     }
     

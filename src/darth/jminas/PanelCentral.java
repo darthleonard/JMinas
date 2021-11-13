@@ -27,6 +27,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private int imgDx;
 	private int imgDy;
 	
+	private JMinasMain minasMain;
 	private Point mira;
 	private Mapa mapa;
 	private int contMinasMarcadas;
@@ -41,7 +42,8 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private ImageIcon iconWiner;
 	private ImageIcon iconRiendo;
 	
-	public PanelCentral(JMinasMain m) {
+	public PanelCentral(JMinasMain minasMain) {
+		this.minasMain = minasMain;
 		mapa = new Mapa();
 		contMinasMarcadas = Variables.numeroMinas;
 		PanelSuperior.UpdateMinas(contMinasMarcadas);
@@ -142,10 +144,10 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private void abrir(int x, int y, int op) {
 		if(x < 0 || x >= Variables.ancho || y < 0 || y >= Variables.alto)
 			return;
-		if(JMinasMain.Ganador || JMinasMain.Perdedor)
+		if(minasMain.Ganador || minasMain.Perdedor)
 			return;
-		if(!JMinasMain.isPlaying()){
-			JMinasMain.StartGame();
+		if(!minasMain.isPlaying()){
+			minasMain.StartGame();
 			
 			// se reliza una pequeña pausa por si la primer casilla abierta
 			// contiene una mina, o el cronometro podría continuar la ejecucion
@@ -160,11 +162,11 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		case 0:
 			if(!mapa.Marcada(x, y)) {
 				if(!mapa.Abrir(x,y)) {
-					JMinasMain.LostGame();
+					minasMain.LostGame();
 					mapa.AbrirMina(x, y);
 				}
 				if(valida()) {
-					JMinasMain.WinGame();
+					minasMain.WinGame();
 				}
 			}
 			break;
@@ -241,7 +243,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		int y = e.getY()/dy;
 		if(x != mira.getX() || y != mira.getY()){
 			mira = new Point(x,y);
-			if(JMinasMain.isPlaying()) {
+			if(minasMain.isPlaying()) {
 				repaint();
 			}
 		}
@@ -301,15 +303,15 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 			break;	
 		case KeyEvent.VK_N:
 			PanelSuperior.UpdateIconStart(iconRiendo,Variables.txtRiendo);
-			JMinasMain.RestartGame();
+			minasMain.RestartGame();
 			break;
 		}
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {
-		if(!JMinasMain.Perdedor)
+		if(!minasMain.Perdedor)
 			PanelSuperior.UpdateIconStart(iconNormal,Variables.txtNormal);
-		if(JMinasMain.Ganador)
+		if(minasMain.Ganador)
 			PanelSuperior.UpdateIconStart(iconWiner,Variables.txtWinner);
 	}
 }

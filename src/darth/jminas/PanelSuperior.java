@@ -17,10 +17,12 @@ import javax.swing.JPanel;
 public class PanelSuperior extends JPanel {
     private static final long serialVersionUID = 2473191468363778297L;
 
+    private JMinasMain minasMain;
     private static JLabel lblTime, lblMinas, lblStart;
     private JPanel pCronometro, pMinas;
 
-    public PanelSuperior() {
+    public PanelSuperior(JMinasMain minasMain) {
+    	this.minasMain = minasMain;
         setBorder(BorderFactory.createRaisedBevelBorder());
         setLayout(new GridLayout(1,5,3,3));
 
@@ -69,7 +71,7 @@ public class PanelSuperior extends JPanel {
             }
 
             public void mouseClicked(MouseEvent e) {
-                JMinasMain.RestartGame();
+            	minasMain.RestartGame();
             }
         });
     }
