@@ -33,7 +33,6 @@ public class JMinasMain extends JFrame implements ActionListener {
     
     private boolean jugando = false;
     public boolean Ganador = false;
-    public boolean Perdedor = false;
     
     public JMinasMain() {
     	errorReporter = new ErrorReporter();
@@ -111,7 +110,6 @@ public class JMinasMain extends JFrame implements ActionListener {
         cronometro.start();
         jugando = true;
         Ganador = false;
-        Perdedor = false;
     }
     
     public void RestartGame() {
@@ -121,7 +119,6 @@ public class JMinasMain extends JFrame implements ActionListener {
             cronometro.setActivo(false);
         jugando = false;
         Ganador = false;
-        Perdedor = false;
     }
     
     public void LostGame() {
@@ -129,16 +126,14 @@ public class JMinasMain extends JFrame implements ActionListener {
         panelCentral.Perdio();
         jugando = false;
         Ganador = false;
-        Perdedor = true;
-        new Sonido(Variables.SonidoExplosion, Perdedor).start();
+        new Sonido(Variables.SonidoExplosion, Ganador).start();
     }
     
     public void WinGame() {
         StopChron();
         panelCentral.Gano();
         Ganador = true;
-        Perdedor = false;
-        new Sonido(Variables.SonidoGanador, Perdedor).start();
+        new Sonido(Variables.SonidoGanador, Ganador).start();
     }
     
     public static void StopChron() {

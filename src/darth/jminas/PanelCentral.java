@@ -144,7 +144,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private void abrir(int x, int y, int op) {
 		if(x < 0 || x >= Variables.ancho || y < 0 || y >= Variables.alto)
 			return;
-		if(minasMain.Ganador || minasMain.Perdedor)
+		if(minasMain.Ganador)
 			return;
 		if(!minasMain.isPlaying()){
 			minasMain.StartGame();
@@ -309,9 +309,10 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {
-		if(!minasMain.Perdedor)
-			PanelSuperior.UpdateIconStart(iconNormal,Variables.txtNormal);
-		if(minasMain.Ganador)
+		if(minasMain.Ganador) {
 			PanelSuperior.UpdateIconStart(iconWiner,Variables.txtWinner);
+		} else {
+			PanelSuperior.UpdateIconStart(iconNormal,Variables.txtNormal);
+		}
 	}
 }
