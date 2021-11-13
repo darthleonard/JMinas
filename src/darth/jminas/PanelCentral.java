@@ -186,29 +186,23 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	}
 	
 	private void cargarImagenes() {
-		cargaImagenIndividual(imgBandera, Variables.pathBandera);
-		cargaImagenIndividual(imgExplosion, Variables.pathExplosion);
-		cargaImagenIndividual(iconNormal, Variables.pathNormal);
-		cargaImagenIndividual(iconClick, Variables.pathClick);
-		cargaImagenIndividual(iconMarca, Variables.pathMarca);
-		cargaImagenIndividual(iconLooser, Variables.pathLooser);
-		cargaImagenIndividual(iconWiner, Variables.pathWinner);
-		cargaImagenIndividual(iconRiendo, Variables.pathRiendo);
+		imgBandera = cargaImagenIndividual(Variables.pathBandera).getImage();
+		imgExplosion = cargaImagenIndividual(Variables.pathExplosion).getImage();
+		iconNormal = cargaImagenIndividual(Variables.pathNormal);
+		iconClick = cargaImagenIndividual(Variables.pathClick);
+		iconMarca = cargaImagenIndividual(Variables.pathMarca);
+		iconLooser = cargaImagenIndividual(Variables.pathLooser);
+		iconWiner = cargaImagenIndividual(Variables.pathWinner);
+		iconRiendo = cargaImagenIndividual(Variables.pathRiendo);
 	}
 	
-	private void cargaImagenIndividual(Image icon, String path) {
+	private ImageIcon cargaImagenIndividual(String path) {
 		try {
-			icon = new ImageIcon(getClass().getResource(path)).getImage();
+			ImageIcon icon = new ImageIcon(getClass().getResource(path));
+			return icon;
 		} catch(NullPointerException e) {
 			new ErrorReporter().CreateLog(path);
-		}
-	}
-	
-	private void cargaImagenIndividual(ImageIcon icon, String path) {
-		try {
-			icon = new ImageIcon(getClass().getResource(path));
-		} catch(NullPointerException e) {
-			new ErrorReporter().CreateLog(path);
+			return null;
 		}
 	}
 	
