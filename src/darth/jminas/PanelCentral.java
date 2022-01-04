@@ -17,6 +17,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import darth.jminas.tools.ErrorReporter;
+
 public class PanelCentral extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private static final long serialVersionUID = 5390823312595822624L;
 	
@@ -25,6 +27,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private int imgDx;
 	private int imgDy;
 	
+	private JMinasMain minasMain;
 	private Point mira;
 	private Mapa mapa;
 	private int contMinasMarcadas;
@@ -39,24 +42,14 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private ImageIcon iconWiner;
 	private ImageIcon iconRiendo;
 	
-	public PanelCentral(JMinasMain m) {
+	public PanelCentral(JMinasMain minasMain) {
+		this.minasMain = minasMain;
 		mapa = new Mapa();
 		contMinasMarcadas = Variables.numeroMinas;
 		PanelSuperior.UpdateMinas(contMinasMarcadas);
 		mira = new Point(0,0);
 		
-		try {
-			imgBandera = new ImageIcon(getClass().getResource(Variables.pathBandera)).getImage();
-			imgExplosion = new ImageIcon(getClass().getResource(Variables.pathExplosion)).getImage();
-			iconNormal = new ImageIcon(this.getClass().getResource(Variables.pathNormal));
-			iconClick = new ImageIcon(this.getClass().getResource(Variables.pathClick));
-			iconMarca = new ImageIcon(this.getClass().getResource(Variables.pathMarca));
-			iconLooser = new ImageIcon(this.getClass().getResource(Variables.pathLooser));
-			iconWiner = new ImageIcon(this.getClass().getResource(Variables.pathWinner));
-			iconRiendo = new ImageIcon(this.getClass().getResource(Variables.pathRiendo));
-		} catch(NullPointerException e) {
-			JMinasMain.flagErrorImagenes = true;
-		}
+		cargarImagenes();
 		
 		if(iconNormal != null)
 			PanelSuperior.UpdateIconStart(iconNormal, Variables.txtNormal);
@@ -68,8 +61,6 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		
-		
 	}
 
 	public void restart() {
@@ -140,13 +131,6 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		g.drawRect(mira.x*dx+1, mira.y*dy+1, dx-2, dy-2);
 	}
 	
-	private boolean valida() {
-		if(mapa.getCeldasAbiertas() == (Variables.ancho*Variables.alto - Variables.numeroMinas))
-			return true;
-		else
-			return false;
-	}
-	
 	public void Perdio() {
 		PanelSuperior.UpdateIconStart(iconLooser,Variables.txtLooser);
 		mapa.AbrirTodo();
@@ -160,10 +144,10 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 	private void abrir(int x, int y, int op) {
 		if(x < 0 || x >= Variables.ancho || y < 0 || y >= Variables.alto)
 			return;
-		if(JMinasMain.Ganador || JMinasMain.Perdedor)
+		if(minasMain.Ganador)
 			return;
-		if(!JMinasMain.isPlaying()){
-			JMinasMain.StartGame();
+		if(!minasMain.isPlaying()){
+			minasMain.StartGame();
 			
 			// se reliza una pequeña pausa por si la primer casilla abierta
 			// contiene una mina, o el cronometro podría continuar la ejecucion
@@ -178,11 +162,11 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		case 0:
 			if(!mapa.Marcada(x, y)) {
 				if(!mapa.Abrir(x,y)) {
-					JMinasMain.LostGame();
+					minasMain.LostGame();
 					mapa.AbrirMina(x, y);
 				}
 				if(valida()) {
-					JMinasMain.WinGame();
+					minasMain.WinGame();
 				}
 			}
 			break;
@@ -197,6 +181,31 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 			break;
 		}
 		repaint();
+	}
+	
+	private boolean valida() {
+		return mapa.getCeldasAbiertas() == (Variables.ancho * Variables.alto - Variables.numeroMinas);
+	}
+	
+	private void cargarImagenes() {
+		imgBandera = cargaImagenIndividual(Variables.pathBandera).getImage();
+		imgExplosion = cargaImagenIndividual(Variables.pathExplosion).getImage();
+		iconNormal = cargaImagenIndividual(Variables.pathNormal);
+		iconClick = cargaImagenIndividual(Variables.pathClick);
+		iconMarca = cargaImagenIndividual(Variables.pathMarca);
+		iconLooser = cargaImagenIndividual(Variables.pathLooser);
+		iconWiner = cargaImagenIndividual(Variables.pathWinner);
+		iconRiendo = cargaImagenIndividual(Variables.pathRiendo);
+	}
+	
+	private ImageIcon cargaImagenIndividual(String path) {
+		try {
+			ImageIcon icon = new ImageIcon(getClass().getResource(path));
+			return icon;
+		} catch(NullPointerException e) {
+			new ErrorReporter().CreateLog(path);
+			return null;
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -234,7 +243,7 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 		int y = e.getY()/dy;
 		if(x != mira.getX() || y != mira.getY()){
 			mira = new Point(x,y);
-			if(JMinasMain.isPlaying()) {
+			if(minasMain.isPlaying()) {
 				repaint();
 			}
 		}
@@ -294,15 +303,16 @@ public class PanelCentral extends JPanel implements MouseListener, MouseMotionLi
 			break;	
 		case KeyEvent.VK_N:
 			PanelSuperior.UpdateIconStart(iconRiendo,Variables.txtRiendo);
-			JMinasMain.RestartGame();
+			minasMain.RestartGame();
 			break;
 		}
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {
-		if(!JMinasMain.Perdedor)
-			PanelSuperior.UpdateIconStart(iconNormal,Variables.txtNormal);
-		if(JMinasMain.Ganador)
+		if(minasMain.Ganador) {
 			PanelSuperior.UpdateIconStart(iconWiner,Variables.txtWinner);
+		} else {
+			PanelSuperior.UpdateIconStart(iconNormal,Variables.txtNormal);
+		}
 	}
 }
